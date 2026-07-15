@@ -1,13 +1,13 @@
-nom,prenom,email,gender,telephone,specialite,date_embauche
-Saunder,McIlhone,smcilhone0@latimes.com,Male,125-544-5364,,7/25/2025
-Briano,Stegers,bstegers1@cyberchimps.com,Male,782-684-5761,,7/4/2026
-Adelaide,Graal,agraal2@engadget.com,Female,158-611-3242,,4/14/2026
-Rudie,Reardon,rreardon3@mediafire.com,Male,926-940-5673,,11/7/2025
-Emylee,McErlaine,emcerlaine4@earthlink.net,Genderfluid,219-656-9062,,6/3/2026
-Jermayne,Giacaponi,jgiacaponi5@foxnews.com,Male,121-304-1643,,4/18/2026
-Lenore,Van der Beken,lvanderbeken6@vk.com,Genderqueer,437-803-2582,,4/21/2026
-Justinn,Blaney,jblaney7@wikispaces.com,Female,472-154-4508,,12/5/2025
-Paddy,Scarlet,pscarlet8@a8.net,Male,672-710-1679,,8/1/2025
-Valentia,Ciccoloi,vciccoloi9@addtoany.com,Female,615-155-0114,,8/26/2025
-Daniel,Wicklen,dwicklena@sun.com,Male,721-655-9643,,1/1/2026
-Amandie,Gartell,agartellb@nps.gov,Female,767-479-7242,,5/3/2026
+nom,prenom,telephone,email,specialite,date_embauche
+Saunder,McIlhone,125-544-5364,smcilhone0@latimes.com,Musculation,2025-07-25
+Briano,Stegers,782-684-5761,bstegers1@cyberchimps.com,Cardio,2026-07-04
+Adelaide,Graal,158-611-3242,agraal2@engadget.com,Fitness,2026-04-14
+Rudie,Reardon,926-940-5673,rreardon3@mediafire.com,Cross-training,2025-11-07
+Emylee,McErlaine,219-656-9062,emcerlaine4@earthlink.net,Renforcement musculaire,2026-06-03
+Jermayne,Giacaponi,121-304-1643,jgiacaponi5@foxnews.com,Preparation physique,2026-04-18
+Lenore,Van der Beken,437-803-2582,lvanderbeken6@vk.com,Mobilite,2026-04-21
+Justinn,Blaney,472-154-4508,jblaney7@wikispaces.com,Perte de poids,2025-12-05
+Paddy,Scarlet,672-710-1679,pscarlet8@a8.net,Musculation,2025-08-01
+Valentia,Ciccoloi,615-155-0114,vciccoloi9@addtoany.com,Fitness,2025-08-26
+Daniel,Wicklen,721-655-9643,dwicklena@sun.com,Cardio,2026-01-01
+Amandie,Gartell,767-479-7242,agartellb@nps.gov,Cross-training,2026-05-03
