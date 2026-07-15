@@ -3,198 +3,129 @@
 -- Script de création des tables
 -- ===========================================
 
--- =====================
--- TABLE : Coach
--- =====================
+-- Supprime les anciennes tables si elles existent
 
-create table coach (
-    id_coach serial primary key,
-    nom varchar(50) not null,
-    prenom varchar(50) not null,
-    telephone varchar(20),
-    email varchar(100) unique,
-    specialite varchar(100),
-    date_embauche date
-);
+DROP TABLE IF EXISTS seance_exercice;
+DROP TABLE IF EXISTS programme_exercice;
+DROP TABLE IF EXISTS equipement;
+DROP TABLE IF EXISTS exercice;
+DROP TABLE IF EXISTS groupe_musculaire;
+DROP TABLE IF EXISTS programme;
+DROP TABLE IF EXISTS salle;
+
+DROP TABLE IF EXISTS paiement;
+DROP TABLE IF EXISTS seance;
+DROP TABLE IF EXISTS membre;
+DROP TABLE IF EXISTS coach;
+DROP TABLE IF EXISTS abonnement;
+
 
 -- =====================
 -- TABLE : Abonnement
 -- =====================
 
-create table abonnement (
-    id_abonnement serial primary key,
-    nom varchar(50) not null,
-    prix decimal(8,2) not null,
-    duree_mois integer not null,
-    description text
+CREATE TABLE abonnement (
+    id_abonnement SERIAL PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL UNIQUE,
+    prix DECIMAL(8,2) NOT NULL,
+    duree_mois INTEGER NOT NULL,
+    description TEXT,
+
+    CONSTRAINT chk_abonnement_prix
+        CHECK (prix >= 0),
+
+    CONSTRAINT chk_abonnement_duree
+        CHECK (duree_mois > 0)
 );
+
+
+-- =====================
+-- TABLE : Coach
+-- =====================
+
+CREATE TABLE coach (
+    id_coach SERIAL PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    telephone VARCHAR(20),
+    email VARCHAR(100) UNIQUE,
+    specialite VARCHAR(100),
+    date_embauche DATE
+);
+
 
 -- =====================
 -- TABLE : Membre
 -- =====================
 
-create table membre (
-    id_membre serial primary key,
-    nom varchar(50) not null,
-    prenom varchar(50) not null,
-    sexe varchar(10),
-    date_naissance date,
-    telephone varchar(20),
-    email varchar(100) unique,
-    adresse varchar(150),
-    ville varchar(100),
-    code_postal varchar(10),
-    date_inscription date not null,
+CREATE TABLE membre (
+    id_membre SERIAL PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    sexe VARCHAR(20),
+    date_naissance DATE,
+    telephone VARCHAR(20),
+    email VARCHAR(100) UNIQUE,
+    adresse VARCHAR(150),
+    ville VARCHAR(100),
+    code_postal VARCHAR(20),
+    date_inscription DATE NOT NULL DEFAULT CURRENT_DATE,
 
-    id_abonnement integer,
-    id_coach integer,
+    id_abonnement INTEGER NOT NULL,
+    id_coach INTEGER,
 
-    constraint fk_membre_abonnement
-        foreign key (id_abonnement)
-        references abonnement(id_abonnement),
+    CONSTRAINT fk_membre_abonnement
+        FOREIGN KEY (id_abonnement)
+        REFERENCES abonnement(id_abonnement),
 
-    constraint fk_membre_coach
-        foreign key (id_coach)
-        references coach(id_coach)
+    CONSTRAINT fk_membre_coach
+        FOREIGN KEY (id_coach)
+        REFERENCES coach(id_coach)
+        ON DELETE SET NULL
 );
+
 
 -- =====================
 -- TABLE : Paiement
 -- =====================
 
-create table paiement (
-    id_paiement serial primary key,
-    date_paiement date not null,
-    montant decimal(8,2) not null,
-    mode_paiement varchar(30),
+CREATE TABLE paiement (
+    id_paiement SERIAL PRIMARY KEY,
+    date_paiement DATE NOT NULL DEFAULT CURRENT_DATE,
+    montant DECIMAL(8,2) NOT NULL,
+    mode_paiement VARCHAR(30),
+    id_membre INTEGER NOT NULL,
 
-    id_membre integer not null,
+    CONSTRAINT chk_paiement_montant
+        CHECK (montant > 0),
 
-    constraint fk_paiement_membre
-        foreign key (id_membre)
-        references membre(id_membre)
+    CONSTRAINT fk_paiement_membre
+        FOREIGN KEY (id_membre)
+        REFERENCES membre(id_membre)
+        ON DELETE CASCADE
 );
 
--- =====================
--- TABLE : Groupe Musculaire
--- =====================
-
-create table groupe_musculaire (
-    id_groupe serial primary key,
-    nom varchar(50) not null
-);
-
--- =====================
--- TABLE : Exercice
--- =====================
-
-create table exercice (
-    id_exercice serial primary key,
-    nom varchar(100) not null,
-    description text,
-
-    id_groupe integer not null,
-
-    constraint fk_exercice_groupe
-        foreign key (id_groupe)
-        references groupe_musculaire(id_groupe)
-);
-
--- =====================
--- TABLE : Programme
--- =====================
-
-create table programme (
-    id_programme serial primary key,
-    nom varchar(100) not null,
-    objectif varchar(100),
-    niveau varchar(30),
-    description text
-);
-
--- =====================
--- TABLE : Salle
--- =====================
-
-create table salle (
-    id_salle serial primary key,
-    nom varchar(100) not null,
-    capacite integer
-);
-
--- =====================
--- TABLE : Equipement
--- =====================
-
-create table equipement (
-    id_equipement serial primary key,
-    nom varchar(100) not null,
-    marque varchar(100),
-    etat varchar(30),
-
-    id_salle integer,
-
-    constraint fk_equipement_salle
-        foreign key (id_salle)
-        references salle(id_salle)
-);
 
 -- =====================
 -- TABLE : Seance
+-- Une séance représente une visite à la salle
 -- =====================
 
-create table seance (
-    id_seance serial primary key,
-    date_seance date not null,
-    duree_minutes integer,
+CREATE TABLE seance (
+    id_seance SERIAL PRIMARY KEY,
+    id_membre INTEGER NOT NULL,
+    date_seance DATE NOT NULL DEFAULT CURRENT_DATE,
+    heure_entree TIME NOT NULL,
+    heure_sortie TIME,
 
-    id_membre integer not null,
-    id_salle integer not null,
+    CONSTRAINT fk_seance_membre
+        FOREIGN KEY (id_membre)
+        REFERENCES membre(id_membre)
+        ON DELETE CASCADE,
 
-    constraint fk_seance_membre
-        foreign key (id_membre)
-        references membre(id_membre),
-
-    constraint fk_seance_salle
-        foreign key (id_salle)
-        references salle(id_salle)
-);
-
--- =====================
--- TABLE : Programme_Exercice
--- =====================
-
-create table programme_exercice (
-    id_programme integer,
-    id_exercice integer,
-    ordre integer,
-
-    primary key (id_programme, id_exercice),
-
-    foreign key (id_programme)
-        references programme(id_programme),
-
-    foreign key (id_exercice)
-        references exercice(id_exercice)
-);
-
--- =====================
--- TABLE : Seance_Exercice
--- =====================
-
-create table seance_exercice (
-    id_seance integer,
-    id_exercice integer,
-
-    series integer,
-    repetitions integer,
-    poids decimal(6,2),
-
-    primary key (id_seance, id_exercice),
-
-    foreign key (id_seance)
-        references seance(id_seance),
-
-    foreign key (id_exercice)
-        references exercice(id_exercice)
+    CONSTRAINT chk_seance_heures
+        CHECK (
+            heure_sortie IS NULL
+            OR heure_sortie > heure_entree
+        )
 );
