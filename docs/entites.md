@@ -1,49 +1,92 @@
 # Entités du projet FitTrack
 
+FitTrack est une base de données permettant de gérer les membres, les coachs, les abonnements, les paiements et les visites d'une salle de sport.
+
 ## Membre
-Personne inscrite à la salle de sport.
+
+Le membre représente une personne inscrite à la salle de sport.
+
+### Attributs
+
+- `id_membre` : identifiant unique du membre ;
+- `nom` : nom du membre ;
+- `prenom` : prénom du membre ;
+- `sexe` : sexe du membre ;
+- `date_naissance` : date de naissance du membre ;
+- `telephone` : numéro de téléphone du membre ;
+- `email` : adresse électronique du membre ;
+- `adresse` : adresse postale du membre ;
+- `ville` : ville de résidence du membre ;
+- `code_postal` : code postal du membre ;
+- `date_inscription` : date d'inscription à la salle ;
+- `id_abonnement` : abonnement du membre ;
+- `id_coach` : coach qui suit éventuellement le membre.
 
 ## Coach
-Employé chargé d'accompagner les membres.
+
+Le coach représente un employé chargé d'accompagner les membres dans leur pratique sportive.
+
+### Attributs
+
+- `id_coach` : identifiant unique du coach ;
+- `nom` : nom du coach ;
+- `prenom` : prénom du coach ;
+- `telephone` : numéro de téléphone du coach ;
+- `email` : adresse électronique du coach ;
+- `specialite` : spécialité sportive du coach ;
+- `date_embauche` : date d'embauche du coach.
 
 ## Abonnement
-Formule donnant accès aux services de la salle.
+
+L'abonnement représente une formule donnant accès aux services de la salle de sport.
+
+### Attributs
+
+- `id_abonnement` : identifiant unique de l'abonnement ;
+- `nom` : nom de la formule ;
+- `prix` : prix mensuel de la formule ;
+- `duree_mois` : durée de l'engagement en mois ;
+- `description` : description des services inclus.
 
 ## Paiement
-Transaction effectuée par un membre pour son abonnement.
 
-## Programme
-Ensemble d'exercices conçus pour atteindre un objectif (prise de masse, perte de poids, etc.).
+Le paiement représente une transaction effectuée par un membre.
 
-## Exercice
-Mouvement réalisable lors d'une séance.
+### Attributs
 
-## Groupe_Musculaire
-Zone du corps principalement sollicitée par un exercice.
+- `id_paiement` : identifiant unique du paiement ;
+- `date_paiement` : date du paiement ;
+- `montant` : montant payé ;
+- `mode_paiement` : moyen de paiement utilisé ;
+- `id_membre` : membre ayant effectué le paiement.
 
 ## Séance
-Entraînement réalisé par un membre à une date donnée.
 
-## Séance_Exercice
-Association entre une séance et les exercices réalisés.
+La séance représente une visite d'un membre dans la salle de sport.
 
-## Équipement
-Machine ou matériel disponible dans la salle.
+### Attributs
 
-## Salle
-Zone ou espace de la salle de sport (musculation, cardio, cours collectifs...).
+- `id_seance` : identifiant unique de la séance ;
+- `id_membre` : membre ayant effectué la visite ;
+- `date_seance` : date de la visite ;
+- `heure_entree` : heure d'entrée dans la salle ;
+- `heure_sortie` : heure de sortie de la salle.
 
+# Relations entre les entités
 
-# Relations
-
-- Un membre possède un abonnement.
-- Un membre effectue plusieurs séances.
-- Un membre peut être suivi par un coach.
+- Un abonnement peut être possédé par plusieurs membres.
+- Un membre possède exactement un abonnement.
 - Un coach peut suivre plusieurs membres.
-- Un membre effectue plusieurs paiements.
-- Un programme contient plusieurs exercices.
-- Un exercice peut appartenir à plusieurs programmes.
-- Un exercice cible un groupe musculaire.
-- Une séance contient plusieurs exercices.
-- Une salle contient plusieurs équipements.
-- Une séance se déroule dans une salle.
+- Un membre peut être suivi par un seul coach.
+- Un membre peut ne pas avoir de coach.
+- Un membre peut effectuer plusieurs paiements.
+- Un paiement appartient à un seul membre.
+- Un membre peut effectuer plusieurs séances.
+- Une séance appartient à un seul membre.
+
+# Cardinalités principales
+
+- `Abonnement (0,N) — possède — Membre (1,1)`
+- `Coach (0,N) — suit — Membre (0,1)`
+- `Membre (0,N) — effectue — Paiement (1,1)`
+- `Membre (0,N) — effectue — Séance (1,1)`
